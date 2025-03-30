@@ -19,8 +19,9 @@ TipoOuVoid --> Tipo | VOID
 
 FormalPar -> paramList | /* vazio */
 
-paramList --> Tipo IDENT , ParamList
-            | Tipo IDENT 
+FATORACAO----------------------
+        paramList --> Tipo IDENT , ParamList
+                    | Tipo IDENT 
 
 Bloco --> { ListaCmd }
 
@@ -35,13 +36,14 @@ Cmd --> Bloco
 RestoIf -> else Cmd
     |    /* vazio */
 
-E --> E + T
-    | E - T
-    | T
+RECURSAO A ESQUERDA----------------------
+                E --> E + T
+                    | E - T
+                    | T
 
-T --> T * F
-    | T / F
-    | F    
+                T --> T * F
+                    | T / F
+                    | F    
     
 F -->  IDENT
     | NUM
