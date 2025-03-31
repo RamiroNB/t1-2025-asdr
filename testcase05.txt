@@ -1,0 +1,4 @@
+$TRACE_ON
+    func int errorFunc() {
+        int a;
+        a = 10;

@@ -1,0 +1,6 @@
+$TRACE_ON
+    func int compute(int x) {
+        while (x) {
+            x = x - 1;
+        }
+    }

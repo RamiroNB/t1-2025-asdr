@@ -1,0 +1,5 @@
+$TRACE_ON
+    func int sum(int a, int b) {
+        int c;
+        c = a + b;
+    }

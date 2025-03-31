@@ -62,13 +62,24 @@ public class AsdrSample {
    RestoIf --> else Cmd 
             | 
 
-  E --> E + T
+E --> E + T
       | T
 
-  T --> IDENT
-   | NUM
-   | ( E )
+T --> IDENT
+| NUM
+| ( E )
 ***/ 
+
+/*
+E -> T R
+
+R -> + T R 
+  | - T R 
+  | 
+ 
+ */
+
+
 
   private void Prog() {
       if (laToken == '{') {
