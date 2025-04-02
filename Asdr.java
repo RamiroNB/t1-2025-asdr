@@ -141,24 +141,28 @@ public class Asdr {
     }
   }
    
-  private void verifica(int expected) { // tem um bug de quando o lex retorna -1 
-      if (laToken == expected)
-         laToken = this.yylex();
-      else {
-         String expStr, laStr;       
+private void verifica(int expected) {
+    if (laToken == expected)
+        laToken = this.yylex();
+    else {
+        String expStr, laStr;       
 
-		expStr = ((expected < BASE_TOKEN_NUM )
-                ? ""+(char)expected
-			     : tokenList[expected-BASE_TOKEN_NUM]);
-         
-		laStr = ((laToken < BASE_TOKEN_NUM )
-                ? Character.toString(laToken)
-                : tokenList[laToken-BASE_TOKEN_NUM]);
+        expStr = (expected < BASE_TOKEN_NUM)
+                 ? "" + (char)expected
+                 : tokenList[expected - BASE_TOKEN_NUM];
 
-          yyerror( "esperado token: " + expStr +
-                   " na entrada: " + laStr);
-     }
-   }
+        if (laToken == -1) {
+            laStr = "EOF";
+        } else if (laToken < BASE_TOKEN_NUM) {
+            laStr = Character.toString((char)laToken);
+        } else {
+            laStr = tokenList[laToken - BASE_TOKEN_NUM];
+        }
+
+        yyerror("esperado token: " + expStr + " na entrada: " + laStr);
+    }
+}
+
 
    /* metodo de acesso ao Scanner gerado pelo JFLEX */
    private int yylex() {

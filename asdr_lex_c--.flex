@@ -16,7 +16,7 @@
 /* macros */
 WHITE_SPACE_CHAR=[\n\r\ \t\b\012]
 DIGIT = [0-9]
-NUM = {DIGIT}+
+NUM {DIGIT}+
 
 
 %% 
