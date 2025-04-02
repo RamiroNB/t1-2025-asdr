@@ -1,3 +1,9 @@
+/*
+ * Alunos: Kristen Arguello, Ramiro Barros e Vinícius Turani
+ * 
+ * Arquivo construído a partir do arquivo AsdrSample.java
+ */
+
 import java.io.*;
 
 public class Asdr {
@@ -38,6 +44,11 @@ public class Asdr {
     lexer = new Yylex(r, this);
   }
 
+  /**
+   * Initial symbol for the parser.
+   * 
+   * Prog --> ListaDecl
+   */
   private void Prog() {
     if (laToken == TIPO || laToken == FUNC || laToken == Yylex.YYEOF) {
       if (debug)
@@ -48,6 +59,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * ListaDecl --> DeclVar ListaDecl | DeclFunc ListaDecl | (vazio)
+   */
   private void ListaDecl() {
     if (laToken == TIPO) {
       if (debug)
@@ -65,6 +79,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * DeclVar --> TIPO ListaIdent ; DeclVar | (vazio)
+   */
   private void DeclVar() {
     if (laToken == TIPO) {
       if (debug)
@@ -80,6 +97,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * ListaIdent --> IDENT RestoListaIdent
+   */
   private void ListaIdent() {
     if (laToken == IDENT) {
       if (debug)
@@ -91,6 +111,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * RestoListaIdent --> , ListaIdent | (vazio)
+   */
   private void RestoListaIdent() {
     if (laToken == ',') {
       if (debug)
@@ -104,6 +127,10 @@ public class Asdr {
     }
   }
 
+  /**
+   * DeclFunc --> FUNC TipoOuVoid IDENT '(' FormalPar ')' '{' DeclVar ListaCmd '}' DeclFun
+   * | (vazio)
+   */
   private void DeclFunc() {
     if (laToken == FUNC) {
       if (debug)
@@ -125,6 +152,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * TipoOuVoid --> TIPO | VOID
+   */
   private void TipoOuVoid() {
     if (laToken == TIPO) {
       if (debug)
@@ -139,6 +169,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * FormalPar --> ParamList | (vazio)
+   */
   private void FormalPar() {
     if (laToken == TIPO) {
       if (debug)
@@ -150,6 +183,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * ParamList --> TIPO IDENT RestoParamList
+   */
   private void ParamList() {
     if (laToken == TIPO) {
       if (debug)
@@ -162,6 +198,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * RestoParamList --> , ParamList | (vazio)
+   */
   private void RestoParamList() {
     if (laToken == ',') {
       if (debug)
@@ -175,6 +214,12 @@ public class Asdr {
     }
   }
 
+  /**
+   * Verifica se o token lido é o esperado. Se sim, lê o próximo token.
+   * Caso contrário, gera um erro de sintaxe.
+   * 
+   * @param expected o token esperado.
+   */
   private void verifica(int expected) {
     if (laToken == expected)
       laToken = this.yylex();
@@ -197,31 +242,18 @@ public class Asdr {
     }
   }
 
-  /* metodo de acesso ao Scanner gerado pelo JFLEX */
-  private int yylex() {
-    int retVal = -1;
-    try {
-      yylval = new ParserVal(0); // zera o valor do token
-      retVal = lexer.yylex(); // le a entrada do arquivo e retorna um token
-    } catch (IOException e) {
-      System.err.println("IO Error:" + e);
-    }
-    return retVal; // retorna o token para o Parser
-  }
-
-  /* metodo de manipulacao de erros de sintaxe */
-  public void yyerror(String error) {
-    System.err.println("Erro: " + error);
-    System.err.println("Entrada rejeitada");
-    System.out.println("\n\nFalhou!!!");
-    System.exit(1);
-
-  }
-
+  /**
+   * Habilita ou desabilita o modo de depuração.
+   * 
+   * @param trace true para habilitar o modo de depuração, false para desabilitar.
+   */
   public void setDebug(boolean trace) {
     debug = trace;
   }
 
+  /**
+   * Bloco --> { ListaCmd }
+   */
   private void Bloco() {
     if (laToken == '{') {
       if (debug)
@@ -234,6 +266,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * ListaCmd --> Cmd ListaCmd | (vazio)
+   */
   private void ListaCmd() {
     if (laToken == '{' || laToken == WHILE || laToken == IDENT || laToken == IF) {
       if (debug)
@@ -246,6 +281,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * Cmd --> Bloco | WHILE ( E ) Cmd | IDENT = E ; | if ( E ) Cmd RestoIF
+   */
   private void Cmd() {
     if (laToken == '{') {
       if (debug)
@@ -279,6 +317,9 @@ public class Asdr {
       yyerror("Erro: esperado {, if, while ou identificador");
   }
 
+  /**
+   * RestoIF --> else Cmd | (vazio)
+   */
   private void RestoIf() {
     if (laToken == ELSE) {
       if (debug)
@@ -292,6 +333,9 @@ public class Asdr {
 
   }
 
+  /**
+   * E --> T AuxE
+   */
   private void E() {
     if (laToken == IDENT || laToken == NUMBER || laToken == '(') {
       if (debug)
@@ -303,6 +347,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * AuxE --> + T AuxE | - T AuxE | (vazio)
+   */
   private void AuxE() {
     if (laToken == '+') {
       if (debug)
@@ -323,6 +370,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * T --> F AuxT
+   */
   private void T() {
     if (laToken == IDENT || laToken == NUMBER || laToken == '(') {
       if (debug)
@@ -334,6 +384,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * AuxT --> * F AuxT | / F AuxT | (vazio)
+   */
   private void AuxT() {
     if (laToken == '*') {
       if (debug)
@@ -354,6 +407,9 @@ public class Asdr {
     }
   }
 
+  /**
+   * F --> IDENT | NUMBER | ( E )
+   */
   private void F() {
     if (laToken == IDENT) {
       if (debug)
@@ -372,6 +428,37 @@ public class Asdr {
     } else {
       yyerror("Erro: esperado IDENT, NUMBER ou (");
     }
+  }
+
+  /* metodo de acesso ao Scanner gerado pelo JFLEX */
+  /**
+   * Lê o próximo token do arquivo de entrada.
+   * @return o token lido.
+   * @throws IOException se ocorrer um erro de entrada/saída.
+   */
+  private int yylex() {
+    int retVal = -1;
+    try {
+      yylval = new ParserVal(0); // zera o valor do token
+      retVal = lexer.yylex(); // le a entrada do arquivo e retorna um token
+    } catch (IOException e) {
+      System.err.println("IO Error:" + e);
+    }
+    return retVal; // retorna o token para o Parser
+  }
+
+  /* metodo (modo panico) de manipulacao de erros de sintaxe */
+  /**
+   * Gera uma mensagem de erro e encerra o programa.
+   * Utiliza o modo pânico para manipulação de erros. 
+   *
+   * @param error a mensagem de erro a ser exibida.
+   */
+  public void yyerror(String error) {
+    System.err.println(error);
+    System.err.println("Entrada rejeitada");
+    System.out.println("\n\nFalhou!!!");
+    System.exit(1);
   }
 
   /**
@@ -405,15 +492,6 @@ public class Asdr {
     } catch (java.io.FileNotFoundException e) {
       System.out.println("File not found : \"" + args[0] + "\"");
     }
-    // catch (java.io.IOException e) {
-    // System.out.println("IO error scanning file \""+args[0]+"\"");
-    // System.out.println(e);
-    // }
-    // catch (Exception e) {
-    // System.out.println("Unexpected exception:");
-    // e.printStackTrace();
-    // }
-
   }
 
 }

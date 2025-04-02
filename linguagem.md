@@ -1,8 +1,10 @@
-## Prog  ListaDecl -->
+NOMES: Kristen Arguello, Ramiro Barros e Vinícius Turani
 
-## ListaDecl -->  DeclVar  ListaDecl
-##            |  DeclFun  ListaDecl
-##            |  /* vazio */
+Prog --> ListaDecl
+
+ListaDecl -->  DeclVar  ListaDecl
+            |  DeclFun  ListaDecl
+            |  /* vazio */
 
 DeclVar --> Tipo ListaIdent ';' DeclVar
         | /* vazio */
@@ -10,8 +12,8 @@ DeclVar --> Tipo ListaIdent ';' DeclVar
 Tipo --> int | double | boolean
 
 FATORACAO----------------------
-          ListaIdent --> IDENT , ListaIdent
-                      | IDENT
+antes:          ListaIdent --> IDENT , ListaIdent
+                             | IDENT
 
 ListaIdent --> IDENT RestoListaIdent
 
@@ -27,7 +29,7 @@ TipoOuVoid --> Tipo | VOID
 FormalPar -> paramList | /* vazio */
 
 FATORACAO----------------------
-                paramList --> Tipo IDENT , ParamList
+antes:          paramList --> Tipo IDENT , ParamList
                             | Tipo IDENT 
 
 paramList --> Tipo IDENT RestoParamList
@@ -35,21 +37,21 @@ paramList --> Tipo IDENT RestoParamList
 RestoParamList --> "," paramList
             | /* vazio */
 
-## Bloco --> { ListaCmd } DONE 
+Bloco --> { ListaCmd } DONE 
 
-## ListaCmd --> Cmd ListaCmd 
-##            |    /* vazio */
+ListaCmd --> Cmd ListaCmd 
+            |    /* vazio */
 
-## Cmd --> Bloco
-##    | while ( E ) Cmd
-##    | IDENT = E ;
-##    | if ( E ) Cmd RestoIf
+Cmd --> Bloco
+    | while ( E ) Cmd
+    | IDENT = E ;
+    | if ( E ) Cmd RestoIf
 
-## RestoIf -> else Cmd
-##        |    /* vazio */
+RestoIf -> else Cmd
+        |    /* vazio */
 
 RECURSAO A ESQUERDA----------------------
-                E --> E + T
+antes:          E --> E + T
                     | E - T
                     | T
 
@@ -60,7 +62,7 @@ AuxE --> + T AuxE
        | /* vazio */
 
 RECURSAO A ESQUERDA----------------------
-                T --> T * F
+antes:          T --> T * F
                     | T / F
                     | F    
 

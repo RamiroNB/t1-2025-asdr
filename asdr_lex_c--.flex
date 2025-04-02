@@ -7,6 +7,7 @@
     this(r);
     this.yyparser = yyparser;
   }
+  
 %}
 
 %integer
