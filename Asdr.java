@@ -240,6 +240,7 @@ private void Cmd() {
   private void RestoIf() {
     if (laToken == ELSE){
       if (debug) System.out.println("RestoIF --> Cmd");
+      verifica(ELSE);
       Cmd();
     }else{
       if (debug) System.out.println("RestoIF --> vazio");

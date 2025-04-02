@@ -46,7 +46,7 @@ NUM = {DIGIT}+
 "," { return yytext().charAt(0); }
 
 [:jletter:][:jletterdigit:]* { return Asdr.IDENT; }  
-{NUM} = { return Asdr.NUMBER; }
+{NUM} { return Asdr.NUMBER; }
 
 {WHITE_SPACE_CHAR}+ { }
 
