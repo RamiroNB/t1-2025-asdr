@@ -40,20 +40,23 @@ public class Asdr {
   }
 
   private void Prog() {
+    if (laToken == TIPO || laToken == FUNC || laToken == Yylex.YYEOF) {
       ListaDecl();
+    } else {
+      yyerror("Erro: esperado TIPO | FUNC | EOF");
+    }
    }
 
-  
   private void ListaDecl(){
-        if (laToken == TIPO){
-            DeclVar();
-            ListaDecl();
-        } else if (laToken==FUNC){
-          DeclFunc();
-          ListaDecl();
-        } else  { 
-          if (debug) System.out.println("ListaDecl --> (vazio)");            
-        }
+    if (laToken == TIPO){
+      DeclVar();
+      ListaDecl();
+    } else if (laToken==FUNC){
+      DeclFunc();
+      ListaDecl();
+    } else  { 
+      if (debug) System.out.println("ListaDecl --> (vazio)");            
+    }
   }
               
   private void DeclVar() {
